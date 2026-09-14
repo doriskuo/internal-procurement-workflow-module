@@ -4,7 +4,7 @@ import { useRequestDetail } from '../../hooks/useRequests';
 import { HorizontalPipeline } from './HorizontalPipeline';
 import { ActionPanel } from './ActionPanel';
 import { AuditTimeline } from './AuditTimeline';
-import { ArrowLeft, ChevronLeft, ChevronRight, Package } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Package, Edit, FileText } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 
 export const RequestDetailPage: FC = () => {
@@ -62,7 +62,33 @@ export const RequestDetailPage: FC = () => {
             </span>
           </h1>
         </div>
+
+        {canEdit && (
+          <Link
+            to={`/requests/${request.id}/edit`}
+            className="flex items-center space-x-1.5 bg-primary text-white hover:bg-primary-hover px-3.5 py-1.5 rounded-md font-medium text-xs transition-colors shadow-sm"
+          >
+            <Edit className="w-3.5 h-3.5" />
+            <span>編輯請購單</span>
+          </Link>
+        )}
       </div>
+
+      {/* Draft Banner */}
+      {request.status === 'DRAFT' && canEdit && (
+        <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 px-4 flex items-center justify-between text-sm shrink-0">
+          <div className="flex items-center gap-2 text-primary font-medium">
+            <FileText className="w-4 h-4" />
+            <span>此請購單目前為草稿狀態，尚未送出審核。</span>
+          </div>
+          <Link
+            to={`/requests/${request.id}/edit`}
+            className="flex items-center space-x-1.5 text-primary hover:text-primary-hover font-semibold text-xs transition-colors underline"
+          >
+            <span>繼續填寫並送出 &rarr;</span>
+          </Link>
+        </div>
+      )}
 
       {/* Pipeline */}
       <div className="bg-surface border border-primary/10 rounded-lg shadow-sm w-full py-4 shrink-0 overflow-x-auto">

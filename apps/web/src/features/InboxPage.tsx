@@ -149,13 +149,31 @@ export const InboxPage: FC = () => {
                         {new Date(req.createdAt).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 text-center">
-                        <Link 
-                          to={`/requests/${req.id}`}
-                          state={{ from: type }}
-                          className="text-primary hover:text-primary-hover font-medium"
-                        >
-                          檢視
-                        </Link>
+                        {(req.status === 'DRAFT' || req.status === 'RETURNED_TO_REQUESTER') && req.requesterId === currentUser.id ? (
+                          <div className="flex items-center justify-center space-x-2">
+                            <Link 
+                              to={`/requests/${req.id}/edit`}
+                              className="text-primary hover:text-primary-hover font-semibold text-xs bg-primary/10 px-2.5 py-1 rounded transition-colors"
+                            >
+                              編輯
+                            </Link>
+                            <Link 
+                              to={`/requests/${req.id}`}
+                              state={{ from: type }}
+                              className="text-text-secondary hover:text-text-primary text-xs transition-colors"
+                            >
+                              檢視
+                            </Link>
+                          </div>
+                        ) : (
+                          <Link 
+                            to={`/requests/${req.id}`}
+                            state={{ from: type }}
+                            className="text-primary hover:text-primary-hover font-medium"
+                          >
+                            檢視
+                          </Link>
+                        )}
                       </td>
                     </tr>
                   );
